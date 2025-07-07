@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fluxograma - Atendimento Total Telas</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 700;
+        }
+        
+        .header p {
+            margin: 10px 0 0 0;
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .flowchart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 800px;
+        }
+        
+        .step-box {
+            background: #f8f9fa;
+            border: 3px solid #667eea;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            width: 100%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .step-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .step-number {
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin: 0 auto 15px;
+        }
+        
+        .step-title {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .step-content {
+            font-size: 1.1em;
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        .decision-box {
+            background: #fff3cd;
+            border: 3px solid #ffc107;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            width: 100%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .decision-title {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #856404;
+            margin-bottom: 15px;
+        }
+        
+        .decision-options {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .option {
+            background: white;
+            border: 2px solid #28a745;
+            border-radius: 10px;
+            padding: 15px;
+            flex: 1;
+            min-width: 200px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .option.negative {
+            border-color: #dc3545;
+        }
+        
+        .option-title {
+            font-weight: 700;
+            color: #28a745;
+            margin-bottom: 10px;
+        }
+        
+        .option.negative .option-title {
+            color: #dc3545;
+        }
+        
+        .arrow {
+            font-size: 2em;
+            color: #667eea;
+            margin: 10px 0;
+        }
+        
+        .icon {
+            font-size: 1.5em;
+            margin-right: 10px;
+        }
+        
+        .ai-indicator {
+            background: #e3f2fd;
+            border-left: 5px solid #2196f3;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        
+        .human-indicator {
+            background: #fff3e0;
+            border-left: 5px solid #ff9800;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        
+        .quote {
+            font-style: italic;
+            background: #f1f3f4;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            border-left: 4px solid #667eea;
+        }
+        
+        .final-box {
+            background: #d4edda;
+            border: 3px solid #28a745;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            width: 100%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+            margin: 5px;
+        }
+        
+        .tag.obras {
+            background: #e8f5e8;
+            color: #2e7d32;
+        }
+        
+        .tag.revenda {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        @media (max-width: 768px) {
+            .decision-options {
+                flex-direction: column;
+            }
+            
+            .option {
+                min-width: auto;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧭 Fluxograma de Atendimento</h1>
+            <p>Total Telas - Processo Automatizado</p>
+        </div>
+        
+        <div class="flowchart">
+            <!-- Etapa 1: Entrada do Lead -->
+            <div class="step">
+                <div class="step-box">
+                    <div class="step-number">1</div>
+                    <div class="step-title">🚪 Entrada do Lead</div>
+                    <div class="step-content">
+                        <strong>Saudação Inicial</strong>
+                        <div class="quote">
+                            "Olá, bom dia!/boa tarde! Tudo bem? Seja bem-vindo(a) à Total Telas 😊"
+                        </div>
+                        <div class="ai-indicator">
+                            <strong>🤖 Atendimento por IA</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow">⬇️</div>
+            
+            <!-- Etapa 2: Conexão via Nome -->
+            <div class="step">
+                <div class="step-box">
+                    <div class="step-number">2</div>
+                    <div class="step-title">👋 Conexão via Nome</div>
+                    <div class="step-content">
+                        <strong>Apresentação da Atendente</strong>
+                        <div class="quote">
+                            "Me chamo Maria e vou dar sequência no seu atendimento. Como posso te chamar?"
+                        </div>
+                        <div class="ai-indicator">
+                            <strong>🤖 Atendimento por IA</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow">⬇️</div>
+            
+            <!-- Etapa 3: Coleta de Informações Básicas -->
+            <div class="step">
+                <div class="step-box">
+                    <div class="step-number">3</div>
+                    <div class="step-title">📧 Coleta de Informações Básicas</div>
+                    <div class="step-content">
+                        <strong>Perguntar</strong>
+                        <div class="quote">
+                            "(nome do lead), você pode me passar seu e-mail, por favor?"
+                        </div>
+                        <div class="ai-indicator">
+                            <strong>🤖 Atendimento por IA</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow">⬇️</div>
+            
+            <!-- Etapa 4: Identificação do Perfil -->
+            <div class="step">
+                <div class="decision-box">
+                    <div class="step-number">4</div>
+                    <div class="decision-title">🎯 Identificação do Perfil do Cliente</div>
+                    <div class="step-content">
+                        <strong>Perguntar</strong>
+                        <div class="quote">
+                            "(nome do lead), o seu interesse nos nossos produtos é para uso próprio ou para revenda?"
+                        </div>
+                        <div class="ai-indicator">
+                            <strong>🤖 Atendimento por IA</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="decision-options">
+                        <div class="option">
+                            <div class="option-title">Se USO PRÓPRIO</div>
+                            <div>Marcar etiqueta:</div>
+                            <div class="tag obras">🏗️ Obras</div>
+                        </div>
+                        <div class="option">
+                            <div class="option-title">Se REVENDA</div>
+                            <div>Marcar etiqueta:</div>
+                            <div class="tag revenda">📦 Revenda</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow">⬇️</div>
+            
+            <!-- Etapa 5: Identificação do Produto -->
+            <div class="step">
+                <div class="decision-box">
+                    <div class="step-number">5</div>
+                    <div class="decision-title">🛍️ Identificação do Produto de Interesse</div>
+                    <div class="step-content">
+                        <strong>Perguntar</strong>
+                        <div class="quote">
+                            "Qual produto você tem interesse?"
+                        </div>
+                        <div class="ai-indicator">
+                            <strong>🤖 Atendimento por IA</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="decision-options">
+                        <div class="option">
+                            <div class="option-title">Se PRODUTO COMPATÍVEL</div>
+                            <div class="quote">
+                                "Legal! A gente trabalha com esse produto sim, (nome do lead). Qual a metragem linear que você está procurando?"
+                            </div>
+                        </div>
+                        <div class="option negative">
+                            <div class="option-title">Se PRODUTO NÃO COMPATÍVEL</div>
+                            <div class="quote">
+                                "Poxa, infelizmente esse produto a gente não trabalha no momento 😞. Mas temos outras soluções em telas e gradis. Você gostaria de conhecer alguma alternativa que possa atender sua necessidade?"
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow">⬇️</div>
+            
+            <!-- Etapa 6: Coleta de Dados -->
+            <div class="step">
+                <div class="decision-box">
+                    <div class="step-number">6</div>
+                    <div class="decision-title">📋 Coleta dos Dados para Cadastro</div>
+                    <div class="step-content">
+                        <strong>Informar</strong>
+                        <div class="quote">
+                            "(nome do lead), para que a gente possa preparar seu orçamento, preciso de algumas informações rapidinho."
+                        </div>
+                        <div class="ai-indicator">
+                            <strong>🤖 Atendimento por IA</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="decision-options">
+                        <div class="option">
+                            <div class="option-title">Se PESSOA JURÍDICA</div>
+                            <div><strong>Coletar:</strong></div>
+                            <ul style="text-align: left; margin-top: 10px;">
+                                <li>CNPJ</li>
+                                <li>Nome da empresa</li>
+                                <li>E-mail (se ainda não informado)</li>
+                                <li>CEP</li>
+                            </ul>
+                        </div>
+                        <div class="option">
+                            <div class="option-title">Se PESSOA FÍSICA</div>
+                            <div><strong>Coletar:</strong></div>
+                            <ul style="text-align: left; margin-top: 10px;">
+                                <li>CPF</li>
+                                <li>Nome completo</li>
+                                <li>E-mail (se ainda não informado)</li>
+                                <li>CEP</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow">⬇️</div>
+            
+            <!-- Etapa 7: Encerramento -->
+            <div class="step">
+                <div class="final-box">
+                    <div class="step-number">7</div>
+                    <div class="step-title">🏁 Encerramento pelo Operador Humano</div>
+                    <div class="step-content">
+                        <strong>Quando todas as etapas forem concluídas corretamente</strong>
+                        <div class="quote">
+                            "Perfeito, vou enviar seu contato para o nosso setor de vendas realizar o orçamento, obrigado!"
+                        </div>
+                        <div class="human-indicator">
+                            <strong>👤 Atendente Humano assume o atendimento</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div style="margin-top: 40px; padding: 20px; background: #f8f9fa; border-radius: 15px; text-align: center;">
+            <h3 style="color: #333; margin-bottom: 15px;">📊 Legenda do Fluxograma</h3>
+            <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 15px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 20px; height: 20px; background: #2196f3; border-radius: 3px;"></div>
+                    <span>🤖 Atendimento por IA</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 20px; height: 20px; background: #ff9800; border-radius: 3px;"></div>
+                    <span>👤 Atendimento Humano</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 20px; height: 20px; background: #ffc107; border-radius: 3px;"></div>
+                    <span>🔄 Ponto de Decisão</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
